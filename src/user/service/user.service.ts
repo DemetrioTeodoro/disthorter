@@ -14,14 +14,16 @@ export class UserService {
     try {
       return await new this.userModel(createUserDto).save();
     } catch (error) {
+      console.error(`Erro ao salvar usuário: ${error.message}`);
       throw new Error('Ocorreu um erro ao salvar usuário.');
     }
   }
 
   async findAll(): Promise<CreateUserDto[]>  {
     try {
-      return await await this.userModel.find();
+      return await this.userModel.find();
     } catch (error) {
+      console.error(`Erro ao buscar usuários: ${error.message}`);
       throw new Error('Ocorreu um erro ao buscar usuários.');
     }
   }
@@ -30,15 +32,17 @@ export class UserService {
     try {
       return await this.userModel.findById(id);   
     } catch (error) {
+      console.error(`Erro ao buscar usuário: ${error.message}`);
       throw new Error('Ocorreu um erro ao buscar usuário.');
     }
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<CreateUserDto> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<UpdateUserDto> {
     try {
-      return await this.userModel.findByIdAndUpdate({ _id: id, }, { $set: updateUserDto, });
+      return await this.userModel.findByIdAndUpdate({ _id: id, }, { $set: updateUserDto, }, { new: true });
     } catch (error) {
-      throw new Error('Ocorreu um erro ao editar usuário.');
+      console.error(`Erro ao atualizar usuário: ${error.message}`);
+      throw new Error('Ocorreu um erro ao atualizar usuário.');
     }
   }
 
@@ -46,6 +50,7 @@ export class UserService {
     try {
       return await this.userModel.deleteOne({ _id: id });
     } catch (error) {
+      console.error(`Erro ao remover usuário: ${error.message}`);
       throw new Error('Ocorreu um erro ao remover usuário.');
     }
   }
