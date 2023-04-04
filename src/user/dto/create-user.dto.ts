@@ -1,4 +1,5 @@
-import { IsDate, IsDateString, IsEmail, IsNotEmpty, IsString, IsStrongPassword, MinLength } from "class-validator";
+import { ArrayMinSize, IsArray, IsDate, IsEmail, IsNotEmpty, IsString, IsStrongPassword, ValidateNested } from "class-validator";
+import { CreatePostDto } from "src/posts/dto/create-post.dto";
 
 export class CreateUserDto {
 
@@ -19,4 +20,10 @@ export class CreateUserDto {
   @IsDate()
   @IsNotEmpty()
   birthDate: Date;
+
+  @IsArray()
+  @IsNotEmpty()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  posts: CreatePostDto[];
 }
