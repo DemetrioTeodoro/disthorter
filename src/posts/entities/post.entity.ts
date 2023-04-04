@@ -5,7 +5,7 @@ import { User } from 'src/user/entities/user.entity';
 
 export type PostDocument = HydratedDocument<Post>;
 
-@Schema({ versionKey: false })
+@Schema({ versionKey: false, timestamps: true })
 export class Post {
   @Prop({ required: true })
   type: string;
@@ -16,8 +16,8 @@ export class Post {
   @Prop()
   imagePath: string;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
-  users: [User];
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User'  })
+  user: User;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
