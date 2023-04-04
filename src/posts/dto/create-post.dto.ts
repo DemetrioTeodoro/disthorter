@@ -17,9 +17,7 @@ export class CreatePostDto {
     @IsNotEmpty()
     imagePath: string;
 
-    @IsArray()
+    @IsMongoId()
     @IsNotEmpty()
-    @ArrayMinSize(1)
-    @ValidateNested({ each: true })
-    users: CreateUserDto[];
+    user: CreateUserDto;
 }
