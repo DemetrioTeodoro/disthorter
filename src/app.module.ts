@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { PostsModule } from './posts/posts.module';
 import { UserModule } from './user/user.module';
+import { AddressModule } from './address/address.module';
 
 @Module({
   imports: [
@@ -14,9 +15,10 @@ import { UserModule } from './user/user.module';
       process.env.URI
     ),
     PostsModule,
-    UserModule
+    UserModule,
+    AddressModule
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
