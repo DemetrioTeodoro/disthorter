@@ -8,27 +8,27 @@ export class AddressController {
   constructor(private readonly addressService: AddressService) { }
 
   @Post()
-  create(@Body() createAddressDto: CreateAddressDto) {
-    return this.addressService.create(createAddressDto);
+  async create(@Body() createAddressDto: CreateAddressDto): Promise<CreateAddressDto> {
+    return await this.addressService.create(createAddressDto);
   }
 
   @Get()
-  findAll() {
-    return this.addressService.findAll();
+  async findAll(): Promise<CreateAddressDto[]> {
+    return await this.addressService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.addressService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<CreateAddressDto> {
+    return await this.addressService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAddressDto: UpdateAddressDto) {
-    return this.addressService.update(+id, updateAddressDto);
+  async update(@Param('id') id: string, @Body() updateAddressDto: UpdateAddressDto): Promise<CreateAddressDto> {
+    return await this.addressService.update(id, updateAddressDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.addressService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.addressService.remove(id);
   }
 }
