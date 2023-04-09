@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -8,7 +8,7 @@ import { User, UserDocument } from '../entities/user.entity';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) { }
 
   async create(createUserDto: CreateUserDto): Promise<CreateUserDto> {
     try {
@@ -19,7 +19,7 @@ export class UserService {
     }
   }
 
-  async findAll(): Promise<CreateUserDto[]>  {
+  async findAll(): Promise<CreateUserDto[]> {
     try {
       return await this.userModel.find();
     } catch (error) {
@@ -30,7 +30,19 @@ export class UserService {
 
   async findOne(id: string): Promise<CreateUserDto> {
     try {
-      return await this.userModel.findById(id);   
+      const user = await this.userModel.aggregate([
+        { $match: { _id: new mongoose.Types.ObjectId(id) } },
+        {
+          $lookup: {
+            from: "addresses",
+            localField: "addresses",
+            foreignField: "_id",
+            as: "addresses"
+          },
+        },
+      ]);
+
+      return user[0];
     } catch (error) {
       console.error(`Erro ao buscar usuário: ${error.message}`);
       throw new Error('Ocorreu um erro ao buscar usuário.');
